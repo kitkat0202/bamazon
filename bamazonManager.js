@@ -43,7 +43,7 @@ let runManager = () => {
                 break;
 
             case "Add New Product":
-                NewInv()
+                newInv()
                 break
         }
     });
@@ -76,11 +76,11 @@ let createArray = () => {
         for (let i = 0; i < res.length; i++) {
             currentProducts.push(res[i].product_name)
         }
-        AddInv()
+        addInv()
     })
 }
 
-let AddInv = () => {
+let addInv = () => {
     inquirer.prompt([
         {
             name: "item",
@@ -103,10 +103,11 @@ let AddInv = () => {
     ]).then(function(answers) {
         connection.query("SELECT product_name, stock_quantity FROM products WHERE ?", { product_name: answers.item }, function(err, res) {
             let product = res[0]
+            let quant = parseInt(product.stock_quantity) + parseInt(answers.quantity)
             if (err) throw err
-            connection.query('UPDATE products SET ? WHERE ?', [ {stock_quantity:(parseInt(product.stock_quantity) + parseInt(answers.quantity))}, {product_name: product.product_name} ], function(err, res) {
+            connection.query('UPDATE products SET ? WHERE ?', [ {stock_quantity:(quant)}, {product_name: product.product_name} ], function(err, res) {
                 if (err) throw err
-                console.log(`${product.product_name} stock is now updated to ${product.stock_quantity}`)
+                console.log(`${product.product_name} stock is now updated to ${quant}`)
                 runManager()
             })
         })
@@ -114,7 +115,7 @@ let AddInv = () => {
     
 }
 
-let NewInv = () => {
+let newInv = () => {
     inquirer.prompt([
         {
             name: "name",
