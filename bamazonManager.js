@@ -167,7 +167,7 @@ let NewInv = () => {
     ]).then (function(answers) {
         console.log(`\n\nNEW PRODUCT:\n     Name: ${answers.name}\n     Dept: ${answers.department}\n     Price: ${answers.price}\n     Stock: ${answers.stock}\n\n`)
 
-        connection.query(`INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('${answers.name}', '{answers.department}', ${answers.price}, ${answers.stock})`, function(err, res) {
+        connection.query(`INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('${answers.name}', '${answers.department}', ${answers.price}, ${answers.stock})`, function(err, res) {
             if (err) throw err
             runManager()
         })

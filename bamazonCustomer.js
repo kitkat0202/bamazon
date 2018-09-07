@@ -67,7 +67,7 @@ let buyWhat = () => {
             if (answers.quantity <= res[0].stock_quantity) {
                 console.log(`\n\n"${res[0].product_name}" has been added to your cart:\n     Quantity:      ${answers.quantity}\n     Per Product:   $${res[0].price}\n     Total:         $${parseInt(res[0].price) *  parseInt(answers.quantity)}`)
                 console.log("---------------------------------------------------------------------\n\n")
-                connection.query('UPDATE products SET ? WHERE ?', [ {stock_quantity:(res[0].stock_quantity - answers.quantity)}, {product_name: answers.item} ], function(err, res) {
+                connection.query('UPDATE products SET ?, ? WHERE ?', [ {stock_quantity:(res[0].stock_quantity - answers.quantity)}, {product_sales: res[0].product_sales + (parseInt(res[0].price) *  parseInt(answers.quantity))}, {product_name: answers.item} ], function(err, res) {
                     if (err) throw err
                     connection.end()
                 })
